@@ -79,12 +79,22 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var foundOne = false;
+      for (let j = 0; j < this.rows()[rowIndex].length; j++ ) {
+        if (this.rows()[rowIndex][j] === 1) {
+          if (foundOne) return true;
+          foundOne = true;
+        }
+      }
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      for (let i = 0; i < this.rows().length; i++) {
+        if (this.hasRowConflictAt(i)) return true;
+      }
+      return false;
     },
 
 
@@ -94,12 +104,22 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var foundOne = false;
+      for (let i = 0; i < this.rows().length; i++ ) {
+        if (this.rows()[i][colIndex] === 1) {
+          if (foundOne) return true;
+          foundOne = true;
+        }
+      }
+      return false;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      for (let j = 0; j < this.rows()[0].length; j++) {
+        if (this.hasColConflictAt(j)) return true;
+      }
+      return false;
     },
 
 
@@ -108,13 +128,33 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMajorDiagonalConflictAt: function(colIndex) {
+      let foundOne = false;
+      let tempColIndex = colIndex;
+
+      for (let startRow = 0; startRow < this.rows()[0].length; startRow++) {
+
+        tempColIndex = colIndex;
+        for (let i = startRow; i < this.rows()[0].length; i++) {
+          if (this.rows()[i][tempColIndex] === 1) {
+            if (foundOne) return true;
+            foundOne = true;
+          }
+          tempColIndex++;
+          if (tempColIndex >= this.rows()[0].length) {
+            break;
+          }
+        }
+      }
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      // for (let j = 0; j < this.rows()[0].length; j++) {
+      //   if (this.hasMajorDiagonalConflictAt(j)) return true;
+      // }
+      // return false;
     },
 
 
@@ -123,13 +163,27 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function(colIndex) {
+      let foundOne = false;
+      let tempColIndex = colIndex;
+
+      for (let i = 0; i < this.rows().length; i++) {
+        if (this.rows()[i][colIndex] === 1) {
+          if (foundOne) return true;
+          foundOne = true;
+        }
+        colIndex--;
+        if (colIndex < 0) colIndex = this.rows().length - 1;
+      }
+      return false;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      for (let j = 0; j < this.rows()[0].length; j++) {
+        if (this.hasMinorDiagonalConflictAt(j)) return true;
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
@@ -146,3 +200,41 @@
   };
 
 }());
+
+
+/**
+ * @param {number} numRows
+ * @return {number[][]}
+ */
+var generate = function (numRows) {
+  var arr = [];
+
+  var recurse = function (tempN) {
+    if (tempN === 1) {
+      arr.push([1]);
+      recurse(tempN + 1);
+    } else if (tempN === 2) {
+      arr.push([1, 1]);
+      recurse(tempN + 1);
+    } else {
+      if (tempN >= numRows) {
+        return;
+      }
+
+      let count = 1;
+      let arrN = [];
+      arrN.push(1);
+
+      while (count < tempN) {
+        arrN.push(arr[tempN - 1][count - 1] + arr[tempN - 1][count - 1]);
+        count++;
+      }
+      arrN.push(1);
+      arr.push(arrN);
+
+      recurse(tempN + 1);
+    }
+  }
+  recurse(numRows);
+  return arr;
+};
