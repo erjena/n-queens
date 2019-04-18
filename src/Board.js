@@ -62,7 +62,7 @@
     },
 
 
-/*
+    /*
          _             _     _
      ___| |_ __ _ _ __| |_  | |__   ___ _ __ ___ _
     / __| __/ _` | '__| __| | '_ \ / _ \ '__/ _ (_)
@@ -82,7 +82,9 @@
       var foundOne = false;
       for (let j = 0; j < this.rows()[rowIndex].length; j++ ) {
         if (this.rows()[rowIndex][j] === 1) {
-          if (foundOne) return true;
+          if (foundOne) {
+            return true;
+          }
           foundOne = true;
         }
       }
@@ -92,7 +94,9 @@
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
       for (let i = 0; i < this.rows().length; i++) {
-        if (this.hasRowConflictAt(i)) return true;
+        if (this.hasRowConflictAt(i)) {
+          return true;
+        }
       }
       return false;
     },
@@ -107,7 +111,9 @@
       var foundOne = false;
       for (let i = 0; i < this.rows().length; i++ ) {
         if (this.rows()[i][colIndex] === 1) {
-          if (foundOne) return true;
+          if (foundOne) {
+            return true;
+          }
           foundOne = true;
         }
       }
@@ -117,7 +123,9 @@
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
       for (let j = 0; j < this.rows()[0].length; j++) {
-        if (this.hasColConflictAt(j)) return true;
+        if (this.hasColConflictAt(j)) {
+          return true;
+        }
       }
       return false;
     },
@@ -137,7 +145,9 @@
         tempColIndex = colIndex;
         for (let i = startRow; i < this.rows()[0].length; i++) {
           if (this.rows()[i][tempColIndex] === 1) {
-            if (foundOne) return true;
+            if (foundOne) {
+              return true;
+            }
             foundOne = true;
           }
           tempColIndex++;
@@ -169,11 +179,15 @@
 
       for (let i = 0; i < this.rows().length; i++) {
         if (this.rows()[i][colIndex] === 1) {
-          if (foundOne) return true;
+          if (foundOne) {
+            return true;
+          }
           foundOne = true;
         }
         colIndex--;
-        if (colIndex < 0) colIndex = this.rows().length - 1;
+        if (colIndex < 0) {
+          colIndex = this.rows().length - 1;
+        }
       }
       return false;
     },
@@ -181,7 +195,9 @@
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
       for (let j = 0; j < this.rows()[0].length; j++) {
-        if (this.hasMinorDiagonalConflictAt(j)) return true;
+        if (this.hasMinorDiagonalConflictAt(j)) {
+          return true;
+        }
       }
       return false;
     }
@@ -234,7 +250,7 @@ var generate = function (numRows) {
 
       recurse(tempN + 1);
     }
-  }
+  };
   recurse(numRows);
   return arr;
 };
