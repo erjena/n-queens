@@ -217,22 +217,7 @@
         }
       }
       return false;
-    },
-    /*--------------------  Optimization Helper Functions  ---------------------*/
-
-    // hasForwardRowConflicts: function(row, col) {
-    //   for (let i = 0; i < this.get('n'); i++) {
-    //     if (this.hasColConflictAt(i)) return true;
-    //   }
-    //   return false;
-    // },
-
-    // hasForwardColConflicts: function() {
-    //   for (let i = 0; i < this.get('n'); i++) {
-    //     if (this.hasColConflictAt(i)) return true;
-    //   }
-    //   return false;
-    // }
+    }
 
     /*--------------------  End of Helper Functions  ---------------------*/
 

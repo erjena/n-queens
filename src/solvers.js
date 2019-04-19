@@ -71,9 +71,19 @@ window.findNQueensSolution = function (n) {
   var solution;
   var numOfQueens = 0;
   var done = false;
+  var diagonalMajor = {};
+  var diagonalMinor = {};
 
   if (n === 2 || n === 3) {
     return matrix.rows();
+  }
+  
+  for (let i = -n + 1; i <= n - 1; i++) {
+    diagonalMajor[i] = false;
+  }
+
+  for (let i = 0; i <= 2 * n - 2; i++) {
+    diagonalMinor[i] = false;
   }
 
   var colVisited = {}; 
@@ -94,12 +104,19 @@ window.findNQueensSolution = function (n) {
     }
 
     for (var i = 0; i < n; i++) {
+      
       matrix.togglePiece(rowStart, i);
-      if (!colVisited[i] && !matrix.hasAnyMajorDiagonalConflicts() && !matrix.hasAnyMinorDiagonalConflicts()) {
+      let maj = matrix._getFirstRowColumnIndexForMajorDiagonalOn(rowStart, i);
+      let minor = matrix._getFirstRowColumnIndexForMinorDiagonalOn(rowStart, i);
+      if (!colVisited[i] && !diagonalMajor[maj] && !diagonalMinor[minor]) {
         numOfQueens++;
         colVisited[i] = true;
+        diagonalMajor[maj] = true;
+        diagonalMinor[minor] = true;
         findQueens(rowStart + 1);
         numOfQueens--;
+        diagonalMajor[maj] = false;
+        diagonalMinor[minor] = false;
         colVisited[i] = false;
       }
       if (!done) {
